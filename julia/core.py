@@ -428,7 +428,7 @@ class Julia(object):
             self._debug("show called ...")
         # self.api.jl_printf(self.api.jl_stderr_stream(), "\n");
 
-        res = self.api.jl_call2(void_p(self.api.convert), void_p(self.api.PyObject), void_p(exoc))
+        res = self.api.jl_call1(void_p(self.api.PyObject), void_p(exoc))
         if res is None:
             exception = self.api.jl_typeof_str(exoc).decode('utf-8')
         else:
@@ -454,7 +454,7 @@ class Julia(object):
         ans = self._call(src)
         if not ans:
             return None
-        res = self.api.jl_call2(void_p(self.api.convert), void_p(self.api.PyObject), void_p(ans))
+        res = self.api.jl_call1(void_p(self.api.PyObject), void_p(ans))
 
         if res is None:
             self.check_exception(src)
