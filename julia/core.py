@@ -72,6 +72,11 @@ class JuliaModule(ModuleType):
         self.__loader__ = loader
 
     @property
+    def __doc__(self):
+        juliapath = remove_prefix(self.__name__, "julia.")
+        return self._julia.help(juliapath)
+
+    @property
     def __all__(self):
         juliapath = remove_prefix(self.__name__, "julia.")
         names = set(self._julia.eval("names({})".format(juliapath)))
@@ -493,7 +498,7 @@ class Julia(object):
         """ Return help string for function by name. """
         if name is None:
             return None
-        return self.eval('Markdown.plain(@doc("{}"))'.format(name))
+        return self.eval('Markdown.plain(@doc({}))'.format(name))
 
     def eval(self, src):
         """ Execute code in Julia, then pull some results back to Python. """
