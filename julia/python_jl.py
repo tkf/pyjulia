@@ -39,6 +39,8 @@ let code = PyCall.pyimport("julia.pseudo_python_cli")[:main](ARGS)
     end
 end
 """
+if os.linesep != "\n":  # in Windows
+    script_jl = script_jl.replace("\n", os.linesep)
 
 
 def remove_julia_options(args):
