@@ -29,8 +29,6 @@ from .pseudo_python_cli import make_parser
 script_jl = """
 import PyCall
 
-# Initialize julia.Julia once so that subsequent calls of julia.Julia()
-# uses pre-configured DLL.
 PyCall.pyimport("julia")[:Julia](init_julia=false)
 
 let code = PyCall.pyimport("julia.pseudo_python_cli")[:main](ARGS)
@@ -39,8 +37,10 @@ let code = PyCall.pyimport("julia.pseudo_python_cli")[:main](ARGS)
     end
 end
 """
-if os.linesep != "\n":  # in Windows
-    script_jl = script_jl.replace("\n", os.linesep)
+# Julia(init_julia=false) is called above so that subsequent calls of
+# julia.Julia() uses pre-configured DLL.
+
+oneliner_jl = script_jl.replace("\n", ";")
 
 
 def remove_julia_options(args):
@@ -114,7 +114,7 @@ def main(args=None):
         args = sys.argv[1:]
     ns, unused_args = parse_pyjl_args(args)
     julia = ns.julia
-    os.execvp(julia, [julia, "-e", script_jl, "--"] + unused_args)
+    os.execvp(julia, [julia, "-e", oneliner_jl, "--"] + unused_args)
 
 
 if __name__ == "__main__":
