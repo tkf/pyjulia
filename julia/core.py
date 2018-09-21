@@ -662,6 +662,8 @@ class Julia(object):
                 end
                 """)
 
+            self.api.jl_sigatomic_begin()
+
         # Whether we initialized Julia or not, we MUST create at least one
         # instance of PyObject and the convert function. Since these will be
         # needed on every call, we hold them in the Julia object itself so
