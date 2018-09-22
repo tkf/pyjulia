@@ -47,6 +47,7 @@ matrix:
 branches:
   only:
     - master
+    - /appveyor/.*/
 
 notifications:
   - provider: Email
