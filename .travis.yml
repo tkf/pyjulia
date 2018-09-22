@@ -46,6 +46,7 @@ matrix:
 branches:
   only:
     - master
+    - /.*/travis/
 notifications:
   email: false
 before_script:
