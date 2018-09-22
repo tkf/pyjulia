@@ -30,19 +30,7 @@ PYJL_ARGUMENT_HELP = ARGUMENT_HELP + """
   --julia JULIA  Julia interpreter to be used. (default: julia)
 """
 
-script_jl = """
-import PyCall
-
-# Initialize julia.Julia once so that subsequent calls of julia.Julia()
-# uses pre-configured DLL.
-PyCall.pyimport("julia")[:Julia](init_julia=false)
-
-let code = PyCall.pyimport("julia.pseudo_python_cli")[:main](ARGS)
-    if code isa Integer
-        exit(code)
-    end
-end
-"""
+SCRIPT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "python.jl")
 
 
 def remove_julia_options(args):
@@ -112,7 +100,7 @@ def main(args=None):
         args = sys.argv[1:]
     ns, unused_args = parse_pyjl_args(args)
     julia = ns.julia
-    os.execvp(julia, [julia, "-e", script_jl, "--"] + unused_args)
+    os.execvp(julia, [julia, SCRIPT, "--"] + unused_args)
 
 
 if __name__ == "__main__":
