@@ -565,7 +565,17 @@ class Julia(object):
         else:
             # we're assuming here we're fully inside a running Julia process,
             # so we're fishing for symbols in our own process table
-            self.api = ctypes.PyDLL(None)
+            if os.name in ("nt", "ce"):
+                self.api = ctypes.PyDLL("python dll", None, sys.dllhandle)
+            elif sys.platform == "cygwin":
+                self.api = ctypes.PyDLL("libpython%d.%d.dll" % sys.version_info[:2])
+            else:
+                self.api = ctypes.PyDLL(None)
+            # `self.api` above is constructed like `ctypes.pythonapi`.
+            # See:
+            # https://github.com/python/cpython/blob/2.7/Lib/ctypes/__init__.py#L449-L454
+            # https://github.com/python/cpython/blob/v3.7.0/Lib/ctypes/__init__.py#L439-L444
+
 
         # Store the running interpreter reference so we can start using it via self.call
         self.api.jl_.argtypes = [void_p]
