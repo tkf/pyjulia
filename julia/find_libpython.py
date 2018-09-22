@@ -82,7 +82,7 @@ def _linked_libpython_windows():
     MAX_PATH = 260
     try:
         buf = ctypes.create_unicode_buffer(MAX_PATH)
-        GetModuleFileName(ctypes.pythonapi, buf, MAX_PATH)
+        GetModuleFileName(ctypes.pythonapi._handle, buf, MAX_PATH)
         return buf.value
     except (ValueError, OSError):
         return None
