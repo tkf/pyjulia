@@ -39,7 +39,7 @@ def linked_libpython():
         A path to linked libpython.  Return `None` if statically linked.
     """
     if is_windows:
-        return None
+        return _linked_libpython_windows()
     return _linked_libpython_unix()
 
 
