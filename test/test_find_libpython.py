@@ -15,5 +15,5 @@ def test_finding_libpython_yield_type():
 
 
 def test_linked_libpython():
-    if determine_if_statically_linked():
+    if not determine_if_statically_linked():
         assert linked_libpython() is not None
