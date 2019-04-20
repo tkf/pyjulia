@@ -35,6 +35,15 @@ PYJL_ARGUMENT_HELP = ARGUMENT_HELP + """
 script_jl = """
 import PyCall
 
+@eval PyCall begin
+function Py_Finalize()
+    pygui_stop_all()
+    disable_sigint() do
+        ccall(@pysym(:Py_Finalize), Cvoid, ())
+    end
+end
+end
+
 # Initialize julia.Julia once so that subsequent calls of julia.Julia()
 # uses pre-configured DLL.
 PyCall.pyimport("julia")[:Julia](init_julia=false)
