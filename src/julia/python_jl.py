@@ -46,7 +46,14 @@ end
 
 # Initialize julia.Julia once so that subsequent calls of julia.Julia()
 # uses pre-configured DLL.
-PyCall.pyimport("julia")[:Julia](init_julia=false)
+let Julia = PyCall.pyimport("julia")[:Julia],
+    cookie = PyCall.ActivatePyActCtx()
+    try
+        Julia(init_julia=false, runtime=Base.julia_cmd().exec[1])
+    finally
+        PyCall.DeactivatePyActCtx(cookie)
+    end
+end
 
 let code = PyCall.pyimport("julia.pseudo_python_cli")[:main](ARGS)
     if code isa Integer
