@@ -81,7 +81,7 @@ def get_loghandler():
     if _loghandler is None:
         import logging
 
-        formatter = logging.Formatter("%(levelname)s %(message)s")
+        formatter = logging.Formatter("%(levelname)s(%(process)d) %(message)s")
 
         _loghandler = logging.StreamHandler()
         _loghandler.setFormatter(formatter)
