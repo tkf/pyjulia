@@ -86,11 +86,6 @@ matrix:
 
   allow_failures:
     - env: JULIA_VERSION=nightly
-branches:
-  only:
-    - master
-    - release/test
-    - upload/test
 notifications:
   email: false
 before_script:
