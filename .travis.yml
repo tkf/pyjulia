@@ -15,6 +15,12 @@ matrix:
   # Python environment is not functional on OS X
   include:
       - language: python
+        os: linux
+        dist: xenial
+        python: "3.8-dev"
+        env:
+          - JULIA_VERSION=1.0
+      - language: python
         env:
           - TOXENV=style
         os: linux
