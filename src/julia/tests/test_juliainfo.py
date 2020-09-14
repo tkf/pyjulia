@@ -47,20 +47,7 @@ def test_juliainfo_without_pycall(tmpdir):
 
     runtime = os.getenv("PYJULIA_TEST_RUNTIME", "julia")
 
-    depot = subprocess.check_output(
-        [
-            runtime,
-            "--startup-file=no",
-            "-e",
-            """
-            paths = [ARGS[1], DEPOT_PATH[2:end]...]
-            print(join(paths, Sys.iswindows() ? ';' : ':'))
-            """,
-            str(tmpdir),
-        ],
-        universal_newlines=True,
-    ).strip()
-
+    depot = str(tmpdir)
     jlinfo = JuliaInfo.load(runtime, env=dict(os.environ, JULIA_DEPOT_PATH=depot))
 
     check_core_juliainfo(jlinfo)
