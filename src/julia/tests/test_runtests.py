@@ -1,3 +1,4 @@
+import os
 import subprocess
 import sys
 from textwrap import dedent
@@ -13,6 +14,8 @@ def test_runtests_failure(tmp_path):
     """
     testfile.write_text(dedent(testcode))
 
+    env = os.environ.copy()
+    env.pop("PYJULIA_TEST_REBUILD", None)
     proc = run(
         [
             sys.executable,
@@ -27,6 +30,7 @@ def test_runtests_failure(tmp_path):
         stdout=subprocess.PIPE,
         stderr=subprocess.STDOUT,
         universal_newlines=True,
+        env=env,
     )
     assert proc.returncode == 1
     assert "1 failed" in proc.stdout
