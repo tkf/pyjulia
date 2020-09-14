@@ -18,6 +18,7 @@ def test_rebuild_broken_pycall(juliainfo, monkeypatch, tmp_path):
     if juliainfo.version_info < (0, 7):
         pytest.skip("Julia >= 0.7 required")
     monkeypatch.setenv("JULIA_PROJECT", str(tmp_path))
+    monkeypatch.setenv("JULIA_LOAD_PATH", "@:@stdlib")
 
     subprocess.check_call(
         [
