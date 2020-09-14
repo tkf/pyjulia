@@ -14,9 +14,10 @@ def test_noop(juliainfo):
 
 
 @only_in_ci
-def test_rebuild_broken_pycall(juliainfo):
+def test_rebuild_broken_pycall(juliainfo, monkeypatch, tmp_path):
     if juliainfo.version_info < (0, 7):
         pytest.skip("Julia >= 0.7 required")
+    monkeypatch.setenv("JULIA_PROJECT", str(tmp_path))
 
     subprocess.check_call(
         [
@@ -26,6 +27,7 @@ def test_rebuild_broken_pycall(juliainfo):
             """using Pkg; Pkg.develop("PyCall")""",
         ]
     )
+    assert (tmp_path / "Project.toml").exists()
 
     # Remove ~/.julia/dev/PyCall/deps/deps.jl
     depsjl = os.path.join(
